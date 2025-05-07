@@ -254,20 +254,3 @@ document.addEventListener('DOMContentLoaded', function() {
   
 
 
-  //step 3//
-  
-  function showScreen(stepNumber) {
-    const screens = document.querySelectorAll(".screen");
-    screens.forEach((screen, index) => {
-        screen.classList.remove("active");
-        if (index === stepNumber - 1) {
-            screen.classList.add("active");
-        }
-    });
-
-    if (stepNumber === 3) {
-        populateAppointmentDetails();
-    }
-}
-
-
