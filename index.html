@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Appointment Booking</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="booking-container">
+        <header>
+            <h1>Book Your Appointment</h1>
+            <div class="progress-steps">
+                <div class="step active" data-step="1">
+                    <span>1</span>
+                    <p>Specialty</p>
+                </div>
+                <div class="step" data-step="2">
+                    <span>2</span>
+                    <p>Doctor & Time</p>
+                </div>
+                <div class="step" data-step="3">
+                    <span>3</span>
+                    <p>Details</p>
+                </div>
+                <div class="step" data-step="4">
+                    <span>4</span>
+                    <p>Patient Info</p>
+                </div>
+                <div class="step" data-step="5">
+                    <span>5</span>
+                    <p>Confirm</p>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Step 1: Specialty Selection -->
+            <section class="booking-step active" id="step1">
+                <h2>Select a Medical Specialty</h2>
+                
+                <!-- Enhanced Search Box -->
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search specialties..." id="specialtySearch">
+                    <button class="clear-search" aria-label="Clear search">
+                        
+                    </button>
+                </div>
+                
+                <!-- Enhanced Specialty Grid -->
+                <div class="specialty-grid">
+                    <div class="specialty-card" data-specialty="cardiology">
+                        <div class="card-icon">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Cardiology</h3>
+                            <p>Heart and cardiovascular system</p>
+                        </div>
+                       
+                    </div>
+                    
+                    <div class="specialty-card" data-specialty="neurology">
+                        <div class="card-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Neurology</h3>
+                            <p>Brain and nervous system</p>
+                        </div>
+                    </div>
+                    
+                    <div class="specialty-card" data-specialty="pediatrics">
+                        <div class="card-icon">
+                            <i class="fas fa-baby"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Pediatrics</h3>
+                            <p>Medical care for infants and children</p>
+                        </div>
+                    </div>
+                    
+                    <div class="specialty-card" data-specialty="dermatology">
+                        <div class="card-icon">
+                            <i class="fas fa-allergies"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Dermatology</h3>
+                            <p>Skin, hair and nail health</p>
+                            <div class="popular-tag">Trending</div>
+                        </div>
+                    </div>
+                    
+                    <div class="specialty-card" data-specialty="internal-medicine">
+                        <div class="card-icon">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Internal Medicine</h3>
+                            <p>Diagnosis of adult diseases</p>
+                        </div>
+                    </div>
+                    
+                    <div class="specialty-card" data-specialty="ophthalmology">
+                        <div class="card-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Ophthalmology</h3>
+                            <p>Eye and vision care</p>
+                        </div>
+                    </div>
+                    
+                    <div class="specialty-card" data-specialty="orthopedics">
+                        <div class="card-icon">
+                            <i class="fas fa-bone"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Orthopedics</h3>
+                            <p>Musculoskeletal system</p>
+                        </div>
+                    </div>
+                    
+                    <div class="specialty-card" data-specialty="psychiatry">
+                        <div class="card-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Psychiatry</h3>
+                            <p>Mental health treatments</p>
+                        </div>
+                    </div>
+                    
+                    <div class="specialty-card" data-specialty="family-medicine">
+                        <div class="card-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Family Medicine</h3>
+                            <p>Primary care for all ages</p>
+                        </div>
+                    </div>
+                    
+                    <div class="specialty-card" data-specialty="endocrinology">
+                        <div class="card-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Endocrinology</h3>
+                            <p>Hormones and metabolism</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <button class="btn-next" disabled>Continue</button>
+                </div>
+            </section>
+
+            <!-- Step 2: Doctor & Time Selection -->
+            <section class="booking-step" id="step2">
+                <h2>Select Doctor and Appointment Time</h2>
+                <div class="doctor-selection">
+                    <div class="doctor-card selected">
+                        <img src="https://via.placeholder.com/80" alt="Dr. Shiela Mae Onsana">
+                        <div class="doctor-info">
+                            <h3>Dr. Shiela Mae Onsana</h3>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <span>4.8 (124 reviews)</span>
+                            </div>
+                            <p>Cardiologist</p>
+                        </div>
+                    </div>
+                    <div class="doctor-card selected">
+                        <img src="https://via.placeholder.com/80" alt="Dr. Harold Dizon">
+                        <div class="doctor-info">
+                            <h3>Dr. Harold Dizon</h3>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <span>4.8 (124 reviews)</span>
+                            </div>
+                            <p>Medicine</p>
+                        </div>
+                    </div>
+                    <div class="doctor-card selected">
+                        <img src="https://via.placeholder.com/80" alt="Dr. Jovan Nadala">
+                        <div class="doctor-info">
+                            <h3>Dr. Jovan Nadala</h3>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <span>4.8 (124 reviews)</span>
+                            </div>
+                            <p>Internal Medicine</p>
+                        </div>
+                    </div>
+                    <div class="doctor-card selected">
+                        <img src="https://via.placeholder.com/80" alt="Dr. Sebastian Tagalog">
+                        <div class="doctor-info">
+                            <h3>Dr. Sebastian Tagalog</h3>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <span>4.8 (124 reviews)</span>
+                            </div>
+                            <p>Neurologist</p>
+                        </div>
+                    </div>
+                    <div class="doctor-card selected">
+                        <img src="https://via.placeholder.com/80" alt="Dr. Jema Legaspi">
+                        <div class="doctor-info">
+                            <h3>Dr. Jema Legaspi</h3>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <span>4.8 (124 reviews)</span>
+                            </div>
+                            <p>Pediatrician</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="date-selection">
+                    <div class="date-selection">
+                        <h3>Select Date</h3>
+                        <div class="calendar">
+                          <div class="calendar-header">
+                            <button class="nav-btn prev-month">&lt;</button>
+                            <h4 class="month-year">May 2025</h4>
+                            <button class="nav-btn next-month">&gt;</button>
+                          </div>
+                          <div class="weekdays">
+                            <div>Sun</div>
+                            <div>Mon</div>
+                            <div>Tue</div>
+                            <div>Wed</div>
+                            <div>Thu</div>
+                            <div>Fri</div>
+                            <div>Sat</div>
+                          </div>
+                          <div class="days-grid"></div>
+                        </div>
+                      </div>
+                    
+                    <h3>Available Times</h3>
+                    <div class="time-slots">
+                        <button class="time-slot">9:00 AM</button>
+                        <button class="time-slot">9:30 AM</button>
+                        <button class="time-slot">9:00 AM</button>
+                        <button class="time-slot">9:30 AM</button>
+                        <button class="time-slot">10:00 AM</button>
+                        <button class="time-slot">10:30 AM</button>
+                        <button class="time-slot">11:00 AM</button>
+                        <button class="time-slot">11:30 AM</button>
+                        <button class="time-slot">1:00 PM</button>
+                        <button class="time-slot">1:30 PM</button>
+                        <button class="time-slot">2:00 PM</button>
+                        <button class="time-slot">2:30 PM</button>
+                        <button class="time-slot">3:00 PM</button>
+                        <button class="time-slot">3:30 PM</button>
+                        <button class="time-slot">4:00 PM</button>
+                    </div>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <button class="btn-back">Back</button>
+                    <button class="btn-next">Continue</button>
+                </div>
+            </section>
+
+            <!-- Screen 3: Appointment Details -->
+            <section class= "details" id="step3">
+                <div class="container">
+                    <h1>Appointment Details</h1>
+                    <p class="subtitle">Please review the information before proceeding.</p>
+
+                    <div class="progress-steps">
+                        <div class="step">
+                            <div class="step-circle">1</div>
+                            <div class="step-label">Specialty</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-circle">2</div>
+                            <div class="step-label">Doctor & Time</div>
+                        </div>
+                        <div class="step active">
+                            <div class="step-circle">3</div>
+                            <div class="step-label">Details</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-circle">4</div>
+                            <div class="step-label">Patient Info</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-circle">5</div>
+                            <div class="step-label">Confirm</div>
+                        </div>
+                    </div>
+
+                    <div class="details-card">
+                        <h3>Selected Appointment</h3>
+                        <p><strong>Doctor:</strong> <span id="summary-doctor">N/A</span></p>
+                        <p><strong>Specialty:</strong> <span id="summary-specialty">N/A</span></p>
+                        <p><strong>Date:</strong> <span id="summary-date">N/A</span></p>
+                        <p><strong>Time:</strong> <span id="summary-time">N/A</span></p>
+                    </div>
+
+                    <div class="navigation-buttons">
+                        <button class="nav-btn previous-btn" onclick="showScreen(2)">Previous</button>
+                        <button class="nav-btn continue-btn" onclick="showScreen(4)">Continue</button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

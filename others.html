@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Your Appointment</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-light: #3b82f6;
+      --primary-dark: #1d4ed8;
+      --secondary: #10b981;
+      --text: #1f2937;
+      --light-gray: #f3f4f6;
+      --medium-gray: #e5e7eb;
+      --dark-gray: #6b7280;
+      --white: #ffffff;
+      --error: #ef4444;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 20px;
+      background-color: #f8fefd;
+      line-height: 1.6;
+      color: var(--text);
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--white);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      padding: 30px;
+    }
+    
+    h1 {
+      color: var(--primary);
+      margin-bottom: 15px;
+      font-size: 28px;
+    }
+    
+    .step { display: none; }
+    .step.active { display: block; }
+    
+    .steps-nav {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+      position: relative;
+    }
+    
+    .steps-nav::before {
+      content: '';
+      position: absolute;
+      top: 15px;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--medium-gray);
+      z-index: 1;
+    }
+    
+    .steps-nav div {
+      text-align: center;
+      flex: 1;
+      position: relative;
+      z-index: 2;
+      padding-top: 10px;
+    }
+    
+    .steps-nav div::before {
+      content: attr(data-step);
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      background: var(--medium-gray);
+      color: var(--dark-gray);
+      border-radius: 50%;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+    
+    .steps-nav .active {
+      font-weight: bold;
+      color: var(--primary);
+    }
+    
+    .steps-nav .active::before {
+      background: var(--primary);
+      color: var(--white);
+    }
+    
+    h2 {
+      font-size: 22px;
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+    
+    .search-bar {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    
+    .search-bar i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--dark-gray);
+    }
+    
+    .search-bar input {
+      width: 100%;
+      padding: 12px 20px 12px 40px;
+      border: 1px solid var(--medium-gray);
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.3s;
+    }
+    
+    .search-bar input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    
+    .specialties, .doctors {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .card {
+      padding: 20px;
+      border: 1px solid var(--medium-gray);
+      border-radius: 10px;
+      background: var(--white);
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border-color: var(--primary-light);
+    }
+    
+    .card.active {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+      background: rgba(37, 99, 235, 0.05);
+    }
+    
+    .card i {
+      font-size: 24px;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    
+    .doctor-card img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 15px;
+    }
+    
+    .doctor-card {
+      display: flex;
+      align-items: center;
+    }
+    
+    .doctor-info h3 {
+      margin: 0 0 5px 0;
+    }
+    
+    .doctor-info p {
+      margin: 0;
+      color: var(--dark-gray);
+      font-size: 14px;
+    }
+    
+    .rating {
+      color: #f59e0b;
+      font-size: 14px;
+      margin: 5px 0;
+    }
+    
+    .calendar-container {
+      margin-top: 20px;
+    }
+    
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .calendar-header h3 {
+      margin: 0;
+    }
+    
+    .nav-btn {
+      background: none;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 5px;
+      color: var(--primary);
+    }
+    
+    .nav-btn:hover {
+      background: var(--light-gray);
+    }
+    
+    .date-input {
+      padding: 10px;
+      border: 1px solid var(--medium-gray);
+      border-radius: 8px;
+      width: 100%;
+      margin-top: 10px;
+    }
+    
+    .time-slots {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .slot {
+      padding: 10px;
+      border: 1px solid var(--medium-gray);
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .slot:hover {
+      background: var(--light-gray);
+    }
+    
+    .slot.selected {
+      background: var(--primary);
+      color: var(--white);
+      border-color: var(--primary);
+    }
+    
+    .slot.unavailable {
+      color: var(--dark-gray);
+      text-decoration: line-through;
+      cursor: not-allowed;
+      background: var(--light-gray);
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    
+    .form-group input, 
+    .form-group select, 
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid var(--medium-gray);
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.3s;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    
+    .radio-group {
+      display: flex;
+      gap: 20px;
+      margin-top: 8px;
+    }
+    
+    .radio-group label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: normal;
+      cursor: pointer;
+    }
+    
+    .summary-item {
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--medium-gray);
+    }
+    
+    .summary-item:last-child {
+      border-bottom: none;
+    }
+    
+    .summary-item strong {
+      display: inline-block;
+      min-width: 120px;
+      color: var(--dark-gray);
+    }
+    
+    .form-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid var(--medium-gray);
+    }
+    
+    .btn {
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 16px;
+    }
+    
+    .btn-prev {
+      background: var(--light-gray);
+      border: 1px solid var(--medium-gray);
+      color: var(--dark-gray);
+    }
+    
+    .btn-prev:hover {
+      background: var(--medium-gray);
+    }
+    
+    .btn-next, .btn-confirm {
+      background: var(--primary);
+      border: 1px solid var(--primary);
+      color: white;
+    }
+    
+    .btn-next:hover, .btn-confirm:hover {
+      background: var(--primary-dark);
+    }
+    
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+      }
+      
+      .steps-nav {
+        flex-wrap: wrap;
+      }
+      
+      .steps-nav div {
+        flex: 1 0 60px;
+        margin-bottom: 15px;
+      }
+      
+      .steps-nav::before {
+        display: none;
+      }
+      
+      .specialties, .doctors {
+        grid-template-columns: 1fr;
+      }
+      
+      .time-slots {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Book Your Appointment</h1>
+    
+    <div class="steps-nav">
+      <div id="nav1" data-step="1" class="active">Specialty</div>
+      <div id="nav2" data-step="2">Doctor & Time</div>
+      <div id="nav3" data-step="3">Details</div>
+      <div id="nav4" data-step="4">Patient Info</div>
+      <div id="nav5" data-step="5">Confirm</div>
+    </div>
+
+    <div id="step1" class="step active">
+      <h2>Select a Medical Specialty</h2>
+      <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search specialties..." oninput="filterSpecialties(this.value)">
+      </div>
+      <div class="specialties" id="specialtyList"></div>
+      <div class="form-actions">
+        <button class="btn btn-next" onclick="nextStep(2)" id="btnStep1" disabled>Continue</button>
+      </div>
+    </div>
+
+    <div id="step2" class="step">
+      <h2>Select Doctor and Appointment Time</h2>
+      <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search doctors..." id="doctorSearch">
+      </div>
+      <div class="doctors" id="doctorCards"></div>
+      
+      <div class="calendar-container">
+        <div class="calendar-header">
+          <h3>Select Date</h3>
+        </div>
+        <input type="date" id="dateInput" class="date-input" min="">
+        <div class="time-slots" id="timeSlots"></div>
+      </div>
+      
+      <div class="form-actions">
+        <button class="btn btn-prev" onclick="prevStep(1)">Back</button>
+        <button class="btn btn-next" onclick="nextStep(3)" id="btnStep2" disabled>Continue</button>
+      </div>
+    </div>
+
+    <div id="step3" class="step">
+      <h2>Appointment Details</h2>
+      <div id="detailsSummary"></div>
+      <div class="form-actions">
+        <button class="btn btn-prev" onclick="prevStep(2)">Back</button>
+        <button class="btn btn-next" onclick="nextStep(4)">Continue</button>
+      </div>
+    </div>
+
+    <div id="step4" class="step">
+      <h2>Patient Information</h2>
+      <div class="form-group">
+        <label for="patientName">Full Name</label>
+        <input type="text" id="patientName" placeholder="Enter your full name">
+      </div>
+      <div class="form-group">
+        <label for="patientEmail">Email Address</label>
+        <input type="email" id="patientEmail" placeholder="Enter your email address">
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-prev" onclick="prevStep(3)">Back</button>
+        <button class="btn btn-next" onclick="nextStep(5)" id="btnStep4" disabled>Continue</button>
+      </div>
+    </div>
+
+    <div id="step5" class="step">
+      <h2>Confirm Appointment</h2>
+      <div id="confirmSummary"></div>
+      <div class="form-actions">
+        <button class="btn btn-prev" onclick="prevStep(4)">Back</button>
+        <button class="btn btn-confirm" onclick="confirmAppointment()">Confirm Appointment</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Enhanced data structure
+    const specialties = [
+      { name: "Cardiology", icon: "fa-heartbeat" },
+      { name: "Neurology", icon: "fa-brain" },
+      { name: "Pediatrics", icon: "fa-baby" },
+      { name: "Dermatology", icon: "fa-allergies" },
+      { name: "Internal Medicine", icon: "fa-user-md" },
+      { name: "Ophthalmology", icon: "fa-eye" },
+      { name: "Orthopedics", icon: "fa-bone" },
+      { name: "Psychiatry", icon: "fa-brain" },
+      { name: "Family Medicine", icon: "fa-home" }
+    ];
+
+    const doctorsData = {
+      "Cardiology": [
+        { name: "Dr. Sarah Johnson", image: "https://randomuser.me/api/portraits/women/65.jpg", rating: 4.8, reviews: 124 },
+        { name: "Dr. James Wilson", image: "https://randomuser.me/api/portraits/men/75.jpg", rating: 4.6, reviews: 98 }
+      ],
+      "Neurology": [
+        { name: "Dr. Michael Chen", image: "https://randomuser.me/api/portraits/men/45.jpg", rating: 4.7, reviews: 87 }
+      ],
+      "Pediatrics": [
+        { name: "Dr. Emily Rodriguez", image: "https://randomuser.me/api/portraits/women/33.jpg", rating: 4.9, reviews: 156 }
+      ]
+    };
+
+    const timeSlots = ["9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", 
+                      "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM"];
+
+    let formData = {
+      specialty: '',
+      doctor: '',
+      date: '',
+      time: '',
+      name: '',
+      email: ''
+    };
+
+    // Initialize date picker with tomorrow's date as minimum
+    document.addEventListener('DOMContentLoaded', function() {
+      const today = new Date();
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const minDate = tomorrow.toISOString().split('T')[0];
+      document.getElementById('dateInput').min = minDate;
+      
+      renderSpecialties();
+      setupDoctorSearch();
+    });
+
+    function updateSteps(activeStep) {
+      document.querySelectorAll('.step').forEach((step, i) => {
+        step.classList.toggle('active', i === activeStep - 1);
+        document.getElementById(`nav${i + 1}`).classList.toggle('active', i === activeStep - 1);
+      });
+    }
+
+    function nextStep(step) {
+      updateSteps(step);
+      if (step === 3) {
+        updateDetailsSummary();
+      }
+      if (step === 5) {
+        updateConfirmSummary();
+      }
+    }
+
+    function prevStep(step) {
+      updateSteps(step);
+    }
+
+    function renderSpecialties(filter = '') {
+      const specialtyList = document.getElementById('specialtyList');
+      specialtyList.innerHTML = '';
+      
+      specialties
+        .filter(spec => spec.name.toLowerCase().includes(filter.toLowerCase()))
+        .forEach(spec => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <i class="fas ${spec.icon}"></i>
+            <h3>${spec.name}</h3>
+          `;
+          card.onclick = () => {
+            document.querySelectorAll('.specialties .card').forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+            formData.specialty = spec.name;
+            document.getElementById('btnStep1').disabled = false;
+            populateDoctors(spec.name);
+          };
+          specialtyList.appendChild(card);
+        });
+    }
+
+    function filterSpecialties(value) {
+      renderSpecialties(value);
+    }
+
+    function setupDoctorSearch() {
+      document.getElementById('doctorSearch').addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        document.querySelectorAll('.doctors .card').forEach(card => {
+          const doctorName = card.querySelector('h3').textContent.toLowerCase();
+          card.style.display = doctorName.includes(searchTerm) ? 'block' : 'none';
+        });
+      });
+    }
+
+    function populateDoctors(specialty) {
+      const container = document.getElementById('doctorCards');
+      container.innerHTML = '';
+      
+      (doctorsData[specialty] || []).forEach(doctor => {
+        const card = document.createElement('div');
+        card.className = 'card doctor-card';
+        card.innerHTML = `
+          <img src="${doctor.image}" alt="${doctor.name}">
+          <div class="doctor-info">
+            <h3>${doctor.name}</h3>
+            <div class="rating">
+              <i class="fas fa-star"></i> ${doctor.rating} (${doctor.reviews} reviews)
+            </div>
+            <p>Available days vary</p>
+          </div>
+        `;
+        card.onclick = () => {
+          document.querySelectorAll('.doctors .card').forEach(c => c.classList.remove('active'));
+          card.classList.add('active');
+          formData.doctor = doctor.name;
+          checkStep2Continue();
+        };
+        container.appendChild(card);
+      });
+    }
+
+    document.getElementById('dateInput').addEventListener('change', function() {
+      formData.date = new Date(this.value).toLocaleDateString('en-US', { 
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
+      });
+      renderTimeSlots();
+      checkStep2Continue();
+    });
+
+    function renderTimeSlots() {
+      const container = document.getElementById('timeSlots');
+      container.innerHTML = '';
+      
+      timeSlots.forEach(time => {
+        const slot = document.createElement('div');
+        slot.className = 'slot';
+        
+        // Randomly mark some slots as unavailable (for demo)
+        const isAvailable = Math.random() > 0.3;
+        if (!isAvailable) {
+          slot.classList.add('unavailable');
+        }
+        
+        slot.textContent = time;
+        slot.onclick = function() {
+          if (this.classList.contains('unavailable')) return;
+          
+          document.querySelectorAll('.slot').forEach(s => s.classList.remove('selected'));
+          this.classList.add('selected');
+          formData.time = time;
+          checkStep2Continue();
+        };
+        container.appendChild(slot);
+      });
+    }
+
+    function checkStep2Continue() {
+      document.getElementById('btnStep2').disabled = !(formData.doctor && formData.date && formData.time);
+    }
+
+    function updateDetailsSummary() {
+      const summary = document.getElementById('detailsSummary');
+      summary.innerHTML = `
+        <div class="summary-item">
+          <strong>Specialty:</strong> ${formData.specialty}
+        </div>
+        <div class="summary-item">
+          <strong>Doctor:</strong> ${formData.doctor}
+        </div>
+        <div class="summary-item">
+          <strong>Date:</strong> ${formData.date}
+        </div>
+        <div class="summary-item">
+          <strong>Time:</strong> ${formData.time}
+        </div>
+      `;
+    }
+
+    document.getElementById('patientName').addEventListener('input', validatePatientInfo);
+    document.getElementById('patientEmail').addEventListener('input', validatePatientInfo);
+
+    function validatePatientInfo() {
+      formData.name = document.getElementById('patientName').value.trim();
+      formData.email = document.getElementById('patientEmail').value.trim();
+      
+      const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
+      document.getElementById('btnStep4').disabled = !(formData.name && emailValid);
+    }
+
+    function updateConfirmSummary() {
+      const summary = document.getElementById('confirmSummary');
+      summary.innerHTML = `
+        <div class="summary-item">
+          <strong>Specialty:</strong> ${formData.specialty}
+        </div>
+        <div class="summary-item">
+          <strong>Doctor:</strong> ${formData.doctor}
+        </div>
+        <div class="summary-item">
+          <strong>Date:</strong> ${formData.date}
+        </div>
+        <div class="summary-item">
+          <strong>Time:</strong> ${formData.time}
+        </div>
+        <div class="summary-item">
+          <strong>Patient Name:</strong> ${formData.name}
+        </div>
+        <div class="summary-item">
+          <strong>Patient Email:</strong> ${formData.email}
+        </div>
+      `;
+    }
+
+    function confirmAppointment() {
+      // In a real app, you would send this data to your backend
+      console.log('Appointment confirmed:', formData);
+      alert(`Appointment confirmed!\n\nYou will receive a confirmation email at ${formData.email}`);
+      
+      // Reset form for demo purposes
+      setTimeout(() => {
+        location.reload();
+      }, 3000);
+    }
+    
+  </script>
+</body>
+</html>
